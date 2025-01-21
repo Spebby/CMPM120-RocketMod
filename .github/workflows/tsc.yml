@@ -1,0 +1,51 @@
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+
+  workflow_dispatch:
+
+  # sets perms of GITHUB_TOKEN to allow deployment to pages.
+  permissions:
+    contents: read
+    pages: write
+    id-token: write
+
+  # allow only 1 concurrent deployment, skipping runs queued between the in-progress.
+  # DO NOT cancel in-progress runs as we want to allow these production deployments to complete.
+  concurrency:
+    group: "pages"
+    cancel-in-progress: false
+
+  defaults:
+    run:
+      shell: bash
+
+jobs:
+  build-and-deploy:
+    name: Build and Deploy to GitHub Pages
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 1  # Fetch only the last commit for a faster checkout
+    - name: Install Node.js dependencies
+      uses: "[[ -f package-lock.json || -f npm-shrinkwrap.json ]] && npm ci || true"
+    - name: Install yarn dependencies
+      run: yarn install
+    - name: Setup Pages
+      id: pages
+      uses: actions/configure-pages@v5
+    - name: Build the site
+      run: yarn build-prod  # Assuming `yarn build` creates the production build
+
+deploy:
+  environment:
+    name: github-pages
+    url: ${{ steps.deployment.outputs.page_url }}
+  runs-on: ubuntu-latest
+  steps:
+    - name: Deploy to Github Pages
+      id: deployment
+      uses: actions/deploy-pages@v4
