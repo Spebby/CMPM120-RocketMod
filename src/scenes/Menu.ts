@@ -3,18 +3,20 @@ import { UIConfig } from "../config";
 import { KeyMap } from "../keymap";
 import { GlobalVars } from "../global";
 
+const assetPath = process.env.NODE_ENV === 'production' ? './assets' : '../assets';
+
 export class MenuScene extends Phaser.Scene {
     constructor() {
         super({ key: 'MenuScene' });
     }
 
     preload() : void {
-        this.load.image('rocket', '../assets/rocket.png');
-        this.load.image('spaceship', '../assets/spaceship.png');
-        this.load.image('starfield', '../assets/starfield.png');
+        this.load.image('rocket', `${assetPath}/rocket.png`);
+        this.load.image('spaceship', `${assetPath}/spaceship.png`);
+        this.load.image('starfield', `${assetPath}/starfield.png`);
         
         // load spritesheet
-        this.load.spritesheet('explosion', '../assets/explosion.png', {
+        this.load.spritesheet('explosion', `${assetPath}/explosion.png`, {
             frameWidth: 32,
             frameHeight: 32,
             startFrame: 0,
@@ -22,9 +24,9 @@ export class MenuScene extends Phaser.Scene {
         });
 
         // audio
-        this.load.audio('sfx-select', '../assets/sfx-select.wav');
-        this.load.audio('sfx-explosion', '../assets/sfx-explosion.wav');
-        this.load.audio('sfx-shot', '../assets/sfx-shot.wav');
+        this.load.audio('sfx-select', `${assetPath}/sfx-select.wav`);
+        this.load.audio('sfx-explosion', `${assetPath}/sfx-explosion.wav`);
+        this.load.audio('sfx-shot', `${assetPath}/sfx-shot.wav`);
     }
 
     create() : void {
