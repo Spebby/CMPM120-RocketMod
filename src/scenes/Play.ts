@@ -3,6 +3,7 @@ import { UIConfig } from '../config';
 import { KeyMap } from '../keymap';
 import { Rocket } from '../objects/rocket';
 import { Spaceship } from '../objects/spaceship';
+import { GlobalVars } from "../global";
 
 export class PlayScene extends Phaser.Scene {
     constructor() {
@@ -22,6 +23,7 @@ export class PlayScene extends Phaser.Scene {
     private gameOver : boolean;
 
     create() : void {
+        KeyMap.initialize(this);
         // place tile sprite
         this.starfield = this.add.tileSprite(0, 0, 640, 480, 'starfield').setOrigin(0, 0);
         let width  = parseInt(GameConfig.scale.width  as string);
@@ -67,7 +69,7 @@ export class PlayScene extends Phaser.Scene {
 
         // 60-second play clock
         scoreConfig.fixedWidth = 0;
-        this.clock = this.time.delayedCall(gameTimer, () => {
+        this.clock = this.time.delayedCall(GlobalVars.gameTimer, () => {
             this.add.text(width/2, height/2, 'GAME OVER', scoreConfig).setOrigin(0.5);
             this.add.text(width/2, height/2 + 64, 'Press (R) to Restart or ← for Menu', scoreConfig).setOrigin(0.5);
             this.gameOver = true;
@@ -81,7 +83,7 @@ export class PlayScene extends Phaser.Scene {
         }
 
         if (this.gameOver && Phaser.Input.Keyboard.JustDown(KeyMap.keyLEFT)) {
-            this.scene.start("menuScene");
+            this.scene.start("MenuScene");
         }
 
         this.starfield.tilePositionX -= 4;

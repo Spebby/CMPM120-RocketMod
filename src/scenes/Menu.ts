@@ -1,7 +1,7 @@
 import { GameConfig } from "../config";
 import { UIConfig } from "../config";
 import { KeyMap } from "../keymap";
-
+import { GlobalVars } from "../global";
 
 export class MenuScene extends Phaser.Scene {
     constructor() {
@@ -53,8 +53,8 @@ export class MenuScene extends Phaser.Scene {
             fixedWidth: 0
         };
 
-        let hHeight = parseInt(GameConfig.scale.height as string);
-        let hWidth  = parseInt(GameConfig.scale.width  as string); 
+        let hHeight = parseInt(GameConfig.scale.height as string) / 2;
+        let hWidth  = parseInt(GameConfig.scale.width  as string) / 2; 
 
         // display menu text
         this.add.text(hWidth, hHeight - UIConfig.borderUISize - UIConfig.borderPadding, 'ROCKET PATROL', menuConfig).setOrigin(0.5);
@@ -67,19 +67,19 @@ export class MenuScene extends Phaser.Scene {
     update() : void {
         if (Phaser.Input.Keyboard.JustDown(KeyMap.keyLEFT)) {
             // easy mode
-            shipSpeed = 3,
-            gameTimer = 60000;
+            GlobalVars.shipSpeed = 3,
+            GlobalVars.gameTimer = 60000;
 
             this.sound.play('sfx-select');
-            this.scene.start('playScene');
+            this.scene.start('PlayScene');
         };
         if (Phaser.Input.Keyboard.JustDown(KeyMap.keyRIGHT)) {
             // hard mode
-            shipSpeed = 4;
-            gameTimer = 45000;
+            GlobalVars.shipSpeed = 4;
+            GlobalVars.gameTimer = 45000;
 
             this.sound.play('sfx-select');
-            this.scene.start('playScene');
+            this.scene.start('PlayScene');
         }
     }
 }

@@ -1,5 +1,5 @@
 import { GameConfig } from '../config';
-import { UIConfig } from '../config';
+import { GlobalVars } from "../global";
 
 let screenWidth  : number;
 let screenHeight : number;
@@ -13,7 +13,7 @@ export class Spaceship extends Phaser.GameObjects.Sprite {
         super(scene, x, y, texture, frame);
         scene.add.existing(this);                        // add to existing scene
         this.points = pointValue;                        // store pointValue
-        this.moveSpeed = shipSpeed;   // spaceship speed in pixels/frame
+        this.moveSpeed = GlobalVars.shipSpeed;   // spaceship speed in pixels/frame
         screenWidth  = parseInt(GameConfig.scale.width as string);
         screenHeight = parseInt(GameConfig.scale.height as string);
     }
